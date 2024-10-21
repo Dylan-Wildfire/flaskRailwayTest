@@ -1,13 +1,19 @@
-from flask import Flask, jsonify
-import os
+from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
-
+# Route for the homepage
 @app.route('/')
 def index():
-    return jsonify({"Choo Choo": "Welcome to your Flask app 🚅"})
+    return render_template('index.html')
 
+# API route to double the number
+@app.route('/double', methods=['POST'])
+def double_number():
+    data = request.get_json()
+    number = data.get('number', 0)
+    doubled = number * 2
+    return jsonify({'result': doubled})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+    app.run(debug=True)
